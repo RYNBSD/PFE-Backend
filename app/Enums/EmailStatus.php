@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Enums;
+
 use App\Enums\EnumToArray;
 
 enum EmailStatus: string
