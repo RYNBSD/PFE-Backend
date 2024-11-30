@@ -109,7 +109,7 @@ class AuthController extends BaseController
                 'email',
                 'max:255',
             ],
-            "code" => ["required", "string", "digits:6"],
+            "code" => ["required", "string"],
             "encrypted_code" => ["required", "string"]
         ]);
         if ($validator->fails()) {
@@ -170,7 +170,7 @@ class AuthController extends BaseController
             'email' => ["required", "email", "max:255"],
             'password' => ["required", "string", "max:255"],
             'password_confirmation' => ["required", "string", "same:password"],
-            "code" => ["required", "string", "digits:6"],
+            "code" => ["required", "string"],
             "encrypted_code" => ["required", "string"]
         ]);
         if ($validator->fails()) {
