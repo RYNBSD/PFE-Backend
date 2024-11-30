@@ -28,7 +28,7 @@ class AuthController extends BaseController
             'role' => 'required|string',
             'email' => 'required|email',
             'password' => 'required|string',
-            'confirmation_password' => 'required|same:password',
+            'password_confirmation' => 'required|same:password',
         ]);
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
@@ -169,7 +169,7 @@ class AuthController extends BaseController
         $validator = Validator::make($body, [
             'email' => ["required", "email", "max:255"],
             'password' => ["required", "string", "max:255"],
-            'confirmation_password' => ["required", "string", "same:password"],
+            'password_confirmation' => ["required", "string", "same:password"],
             "code" => ["required", "string", "digits:6"],
             "encrypted_code" => ["required", "string"]
         ]);
