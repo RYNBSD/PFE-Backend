@@ -1,9 +1,38 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+
+Route::prefix("auth")->name("auth.")->group(function () {
+    Route::post("/register", [AuthController::class, "register"])->name("register");
+    Route::post("/login", [AuthController::class, "login"])->name("login");
+    Route::post("/logout", [AuthController::class, "logout"])->name("logout")->middleware('auth:sanctum');
+    Route::post("/one-time-password", [AuthController::class, "oneTimePassword"])->name("one-time-password");
+    Route::post("/forget-password", [AuthController::class, "forgetPassword"])->name("forget-password");
+    Route::post("/reset-password", [AuthController::class, "resetPassword"])->name("reset-password");
+});
+
+// Route::prefix("user")->name("user.")->group(function () {
+//     Route::get("/all", function () {})->name("all");
+//     Route::get("/", function () {})->name("profile");
+//     Route::post("/register", function () {})->name("create");
+//     Route::put("/", function () {})->name("update");
+//     Route::delete("/", function () {})->name("delete");
+// });
+
+// Route::prefix("project")->name("project.")->group(function () {
+//     Route::get("/all", function () {})->name("all");
+//     Route::get("/{id}", function () {})->name("preview")->where("id", "[0-9]+");
+//     Route::post("/{id}", function () {})->name("create")->where("id", "[0-9]+");
+//     Route::put("/{id}", function () {})->name("update")->where("id", "[0-9]+");
+//     Route::delete("/{id}", function () {})->name("delete")->where("id", "[0-9]+");
+// })->middleware("auth:sanctum");
+
+Route::prefix("admin")->name("admin")->group(function () {});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
