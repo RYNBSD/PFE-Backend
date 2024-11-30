@@ -191,4 +191,10 @@ class AuthController extends BaseController
 
         return $this->sendResponse(null, Response::HTTP_OK);
     }
+
+    function status()
+    {
+        $guard = Auth::guard('sanctum');
+        return $this->sendResponse(["user" => $guard->user()], $guard->check() ? Response::HTTP_OK : Response::HTTP_UNAUTHORIZED);
+    }
 }

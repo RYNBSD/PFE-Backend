@@ -14,6 +14,7 @@ Route::prefix("auth")->name("auth.")->group(function () {
     Route::post("/one-time-password", [AuthController::class, "oneTimePassword"])->name("one-time-password");
     Route::post("/forget-password", [AuthController::class, "forgetPassword"])->name("forget-password");
     Route::post("/reset-password", [AuthController::class, "resetPassword"])->name("reset-password");
+    Route::get("/status", [AuthController::class, "status"])->name("status");
 });
 
 // Route::prefix("user")->name("user.")->group(function () {
