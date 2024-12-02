@@ -127,7 +127,7 @@ class AuthController extends BaseController
         }
 
         return $this->sendResponse([
-            "jwt" => $user->createToken('MyApp')->plainTextToken,
+            "token" => $user->createToken('MyApp')->plainTextToken,
             "user" => $user
         ], Response::HTTP_OK);
     }
