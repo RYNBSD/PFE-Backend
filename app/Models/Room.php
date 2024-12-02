@@ -9,4 +9,14 @@ class Room extends Model
 {
     /** @use HasFactory<\Database\Factories\RoomFactory> */
     use HasFactory;
+    protected $fillable=[
+        'room'
+    ];
+    protected function cast(){
+        return [
+            "created_at"=>"datetime",
+            "updated_at"=>"datetime",
+            "deleted_at"=>"datetime"
+        ];
+    }
 }
