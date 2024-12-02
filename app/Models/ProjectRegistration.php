@@ -9,7 +9,9 @@ class ProjectRegistration extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectRegistrationFactory> */
     use HasFactory;
-    //shouldn't belong to a project in particular 
+    protected $fillable=[ //belong to a project suggestion??
+
+    ];
     protected function cast(){
         return [
             "start_date"=>"datetime",

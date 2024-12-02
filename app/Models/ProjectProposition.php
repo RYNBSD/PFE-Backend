@@ -23,8 +23,8 @@ class ProjectProposition extends Model
     protected function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
-    protected function project():HasOne{
-        return $this->hasOne(Project::class);
+    protected function project():BelongsTo{
+        return $this->belongsTo(Project::class);
     }
     protected function admin():BelongsTo{
         return $this->belongsTo(Admin::class, 'foreign_key','validated_by');     

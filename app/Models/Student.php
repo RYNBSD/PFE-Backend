@@ -13,9 +13,9 @@ class Student extends Model
     use HasFactory;
     protected $fillable = [
         'major',
-        'average_score',
+        'average_score'
     ];
-    public function User():BelongsTo{
+    public function user():BelongsTo{
         return $this->belongsTo(User::class);
     }
 }
