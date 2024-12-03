@@ -85,6 +85,7 @@ class AuthController extends BaseController
 
         if (Auth::attempt(["email" => $body["email"], "password" => $body["password"]], $body["remember"])) {
             $user = Auth::user();
+            $user->load("student", "teacher", "company", "admin");
             return $this->sendResponse([
                 "token" => $user->createToken('MyApp')->plainTextToken,
                 "user" => $user
@@ -120,6 +121,7 @@ class AuthController extends BaseController
         if (!isset($user)) {
             return $this->sendError("User not found", Response::HTTP_NOT_FOUND);
         }
+        $user->load("student", "teacher", "company", "admin");
 
         $code = Crypt::decryptString($body["encrypted_code"]);
         if ($code !== $body["code"]) {
@@ -192,9 +194,10 @@ class AuthController extends BaseController
         return $this->sendResponse(null, Response::HTTP_OK);
     }
 
-    function status()
+    function status(Request $request)
     {
-        $guard = Auth::guard('sanctum');
-        return $this->sendResponse(["user" => $guard->user()], $guard->check() ? Response::HTTP_OK : Response::HTTP_UNAUTHORIZED);
+        $user = $request->user('sanctum');
+        $user?->load("student", "teacher", "company", "admin");
+        return $this->sendResponse(["user" => $user], isset($user) ? Response::HTTP_OK : Response::HTTP_UNAUTHORIZED);
     }
 }

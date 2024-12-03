@@ -10,6 +10,9 @@ class Company extends Model
 {
     /** @use HasFactory<\Database\Factories\CompanyFactory> */
     use HasFactory;
+
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'number'
@@ -17,5 +20,5 @@ class Company extends Model
     public function user():BelongsTo{
         return $this->belongsTo(user::class);
     }
-    
+
 }

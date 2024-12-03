@@ -11,6 +11,9 @@ class Teacher extends Model
 {
     /** @use HasFactory<\Database\Factories\TeacherFactory> */
     use HasFactory;
+
+    public $timestamps = false;
+    
     protected $fillable = [
         'grade',
         'recruitment_date'

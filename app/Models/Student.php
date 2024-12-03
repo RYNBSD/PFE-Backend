@@ -11,11 +11,15 @@ class Student extends Model
 {
     /** @use HasFactory<\Database\Factories\StudentFactory> */
     use HasFactory;
+
+    public $timestamps = false;
+
     protected $fillable = [
         'major',
         'average_score'
     ];
-    public function user():BelongsTo{
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 }

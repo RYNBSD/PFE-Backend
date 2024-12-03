@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\Mail;
@@ -17,13 +18,13 @@ Route::prefix("auth")->name("auth.")->group(function () {
     Route::get("/status", [AuthController::class, "status"])->name("status");
 });
 
-// Route::prefix("user")->name("user.")->group(function () {
-//     Route::get("/all", function () {})->name("all");
-//     Route::get("/", function () {})->name("profile");
-//     Route::post("/register", function () {})->name("create");
-//     Route::put("/", function () {})->name("update");
-//     Route::delete("/", function () {})->name("delete");
-// });
+Route::prefix("user")->name("user.")->group(function () {
+    Route::get("/all", [UserController::class, "all"])->name("all");
+    Route::get("/profile", [UserController::class, "profile"])->name("profile");
+    Route::post("/create", [UserController::class, "create"])->name("create");
+    Route::put("/update", [UserController::class, "update"])->name("update");
+    Route::delete("/delete", [UserController::class, "delete"])->name("delete");
+})->middleware('auth:sanctum');
 
 // Route::prefix("project")->name("project.")->group(function () {
 //     Route::get("/all", function () {})->name("all");

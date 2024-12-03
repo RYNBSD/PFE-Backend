@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Email;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -15,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +31,7 @@ class User extends Authenticatable
         'password',
     ];
 
-/**
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -45,25 +46,28 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    
-    protected function email():HasMany{
+
+    protected function email(): HasMany
+    {
         return $this->HasMany(Email::class);
     }
-    public function teacher():HasOne 
+    public function teacher(): HasOne
     {
         return $this->hasOne(Teacher::class);
     }
 
-    public function student():HasOne
+    public function student(): HasOne
     {
         return $this->hasOne(Student::class);
     }
-    
-    public function admin():HasOne{
+
+    public function admin(): HasOne
+    {
         return $this->hasOne(Admin::class);
     }
-    
-    public function company():HasOne{
+
+    public function company(): HasOne
+    {
         return $this->hasOne(Company::class);
     }
 
@@ -73,9 +77,9 @@ class User extends Authenticatable
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
             'email_verified_at' => 'datetime',
-            'role'=> UserRole::class,
+            'role' => UserRole::class,
             'password' => 'hashed',
-            
+
         ];
     }
 }

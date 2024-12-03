@@ -11,10 +11,12 @@ class Admin extends Model
 {
     /** @use HasFactory<\Database\Factories\AdminFactory> */
     use HasFactory;
-    protected $fillable = [
-    ];
-    public function user():BelongsTo{ 
+
+    public $timestamps = false;
+
+    protected $fillable = [];
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 }
- 
