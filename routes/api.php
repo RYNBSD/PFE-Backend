@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Mailable;
@@ -26,6 +30,22 @@ Route::prefix("user")->name("user.")->group(function () {
     Route::delete("/delete", [UserController::class, "delete"])->name("delete");
 })->middleware('auth:sanctum');
 
+Route::prefix("student")->name("student.*")->group(function () {
+    Route::get("/all", [StudentController::class, "all"])->name("all");
+})->middleware('auth:sanctum');
+
+Route::prefix("teacher")->name("teacher.*")->group(function () {
+    Route::get("/all", [TeacherController::class, "all"])->name("all");
+})->middleware('auth:sanctum');
+
+Route::prefix("company")->name("company.*")->group(function () {
+    Route::get("/all", [CompanyController::class, "all"])->name("all");
+})->middleware('auth:sanctum');
+
+Route::prefix("admin")->name("admin.*")->group(function () {
+    Route::get("/all", [AdminController::class, "all"])->name("all");
+})->middleware("auth:sanctum");
+
 // Route::prefix("project")->name("project.")->group(function () {
 //     Route::get("/all", function () {})->name("all");
 //     Route::get("/{id}", function () {})->name("preview")->where("id", "[0-9]+");
@@ -34,22 +54,20 @@ Route::prefix("user")->name("user.")->group(function () {
 //     Route::delete("/{id}", function () {})->name("delete")->where("id", "[0-9]+");
 // })->middleware("auth:sanctum");
 
-Route::prefix("admin")->name("admin")->group(function () {});
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get("/test-email", function () {
-    $mailable = new Mailable();
+// Route::get("/test-email", function () {
+//     $mailable = new Mailable();
 
-    $mailable
-        ->from('rynbsd04@gmail.com')
-        ->to('bbfgdh@gmail.com')
-        ->subject('test subject')
-        ->html('my first message');
+//     $mailable
+//         ->from('rynbsd04@gmail.com')
+//         ->to('bbfgdh@gmail.com')
+//         ->subject('test subject')
+//         ->html('my first message');
 
-    $result = Mail::send($mailable);
+//     $result = Mail::send($mailable);
 
-    return response(["ok" => true], 200);
-});
+//     return response(["ok" => true], 200);
+// });
