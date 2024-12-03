@@ -46,13 +46,13 @@ Route::prefix("admin")->name("admin.*")->group(function () {
     Route::get("/all", [AdminController::class, "all"])->name("all");
 })->middleware("auth:sanctum");
 
-// Route::prefix("project")->name("project.")->group(function () {
-//     Route::get("/all", function () {})->name("all");
-//     Route::get("/{id}", function () {})->name("preview")->where("id", "[0-9]+");
-//     Route::post("/{id}", function () {})->name("create")->where("id", "[0-9]+");
-//     Route::put("/{id}", function () {})->name("update")->where("id", "[0-9]+");
-//     Route::delete("/{id}", function () {})->name("delete")->where("id", "[0-9]+");
-// })->middleware("auth:sanctum");
+Route::prefix("project")->name("project.")->group(function () {
+    Route::get("/all", function () {})->name("all");
+    Route::get("/{id}", function () {})->name("preview")->where("id", "[0-9]+");
+    Route::post("/{id}", function () {})->name("create")->where("id", "[0-9]+");
+    Route::put("/{id}", function () {})->name("update")->where("id", "[0-9]+");
+    Route::delete("/{id}", function () {})->name("delete")->where("id", "[0-9]+");
+})->middleware("auth:sanctum");
 
 Route::get('/user', function (Request $request) {
     return $request->user();

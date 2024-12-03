@@ -197,7 +197,7 @@ class AuthController extends BaseController
     function status(Request $request)
     {
         $user = $request->user('sanctum');
-        $user?->load("student", "teacher", "company", "admin");
+        $user->load("student", "teacher", "company", "admin");
         return $this->sendResponse(["user" => $user], isset($user) ? Response::HTTP_OK : Response::HTTP_UNAUTHORIZED);
     }
 }
