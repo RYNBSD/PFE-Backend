@@ -13,13 +13,15 @@ class ProjectPropositionFeedback extends Model
     protected $fillable = [
         'feedback',
     ];
-    protected function cast(){
+    protected function cast()
+    {
         return [
-            "created_at"=>"datetime",
-            "updated_at"=>"datetime",
+            "created_at" => "datetime",
+            "updated_at" => "datetime",
         ];
     }
-    protected function projectProposition():BelongsTo{
+    protected function projectProposition(): BelongsTo
+    {
         return $this->belongsTo(ProjectProposition::class);
     }
 }

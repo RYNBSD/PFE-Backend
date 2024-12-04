@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 class ProjectJury extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectJuryFactory> */
@@ -15,16 +16,18 @@ class ProjectJury extends Model
         'role',
     ];
 
-    protected function teacher():BelongsToMany{
+    protected function teacher(): BelongsToMany
+    {
         return $this->belongsToMany(Teacher::class);
     }
-    protected function project():BelongsTo{
+    protected function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
-    protected function cast(){
+    protected function cast()
+    {
         return [
-            'role'=>ProjectJuriesRole::class,
+            'role' => ProjectJuriesRole::class,
         ];
     }
-
 }

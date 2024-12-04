@@ -15,18 +15,22 @@ class ProjectPresentation extends Model
     protected $fillable = [
         'date',
     ];
-    protected function cast(){
+    protected function cast()
+    {
         return [
-            "date"=>"datetime"
+            "date" => "datetime"
         ];
     }
-    protected function user():HasMany{
+    protected function user(): HasMany
+    {
         return $this->hasMany(User::class);
     }
-    protected function project():BelongsTo{
+    protected function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
-    protected function room():HasOne{
+    protected function room(): HasOne
+    {
         return $this->hasOne(Room::class);
     }
 }

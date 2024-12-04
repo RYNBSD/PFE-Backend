@@ -18,8 +18,7 @@ class StudentController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $students = User::all()->where("role", "=", UserRole::STUDENT);
-        $students->load("student");
+        $students = User::with(["student"])->where("role", "=", UserRole::STUDENT)->get();
         return $this->sendResponse([
             "students" => $students
         ], Response::HTTP_OK);

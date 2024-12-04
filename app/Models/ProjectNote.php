@@ -13,10 +13,12 @@ class ProjectNote extends Model
     protected $fillable = [
         'note'
     ];
-    public function user():BelongsTo{
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
-    public function project():BelongsTo{
+    public function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
 }

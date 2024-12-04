@@ -15,18 +15,22 @@ class ProjectProposition extends Model
     protected $fillable = [
         'status',
     ];
-    protected function cast(){
+    protected function cast()
+    {
         return [
-            "status"=>ProjectStatus::class,
+            "status" => ProjectStatus::class,
         ];
     }
-    protected function user():BelongsTo{
+    protected function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
-    protected function project():BelongsTo{
+    protected function project(): BelongsTo
+    {
         return $this->belongsTo(Project::class);
     }
-    protected function admin():BelongsTo{
-        return $this->belongsTo(Admin::class, 'foreign_key','validated_by');     
+    protected function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class, 'foreign_key', 'validated_by');
     }
 }

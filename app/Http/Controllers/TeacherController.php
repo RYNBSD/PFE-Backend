@@ -17,10 +17,9 @@ class TeacherController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $students = User::all()->where("role", "=", UserRole::TEACHER);
-        $students->load("teacher");
+        $teachers = User::with(["teacher"])->where("role", "=", UserRole::TEACHER)->get();
         return $this->sendResponse([
-            "students" => $students
+            "teachers" => $teachers
         ], Response::HTTP_OK);
     }
 }

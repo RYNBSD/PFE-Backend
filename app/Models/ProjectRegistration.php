@@ -9,13 +9,14 @@ class ProjectRegistration extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectRegistrationFactory> */
     use HasFactory;
-    protected $fillable=[ //belong to a project suggestion??
+    protected $fillable = [ //belong to a project suggestion??
 
     ];
-    protected function cast(){
+    protected function cast()
+    {
         return [
-            "start_date"=>"datetime",
-            "end_date"=>"datetime"
+            "start_date" => "datetime",
+            "end_date" => "datetime"
         ];
     }
 }

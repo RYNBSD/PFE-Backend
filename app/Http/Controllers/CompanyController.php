@@ -17,10 +17,9 @@ class CompanyController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $students = User::all()->where("role", "=", UserRole::COMPANY);
-        $students->load("company");
+        $companies = User::with(["company"])->where("role", "=", UserRole::COMPANY)->get();
         return $this->sendResponse([
-            "students" => $students
+            "companies" => $companies
         ], Response::HTTP_OK);
     }
 }
