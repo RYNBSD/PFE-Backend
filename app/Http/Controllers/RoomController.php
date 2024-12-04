@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoomController extends BaseController
@@ -51,6 +52,19 @@ class RoomController extends BaseController
         if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
+
+        $body = $request->all();
+        $validator = Validator::make($body, [
+            "room" => ["required", "string", "max:255"]
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        }
+
+        Room::create([
+            "room" => $body["room"]
+        ]);
+        return $this->sendResponse(null, Response::HTTP_CREATED);
     }
 
     function update(Request $request)
@@ -69,6 +83,19 @@ class RoomController extends BaseController
         if ($room === null) {
             return $this->sendError("Room not found", Response::HTTP_NOT_FOUND);
         }
+
+        $body = $request->all();
+        $validator = Validator::make($body, [
+            "room" => ["required", "string", "max:255"]
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        }
+
+        $room->update([
+            "room" => $body["room"]
+        ]);
+        return $this->sendResponse(null, Response::HTTP_CREATED);
     }
 
     function delete(Request $request)
