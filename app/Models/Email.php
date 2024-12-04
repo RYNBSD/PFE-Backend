@@ -14,14 +14,16 @@ class Email extends Model
     protected $fillable = [
         'subject',
         'content',
-        'status'
+        'status',
+        'receiver_id',
+        'admin_id',
     ];
 
     protected function casts(): array
     {
         return [
             'status' => EmailStatus::class,
-            'sent_at' => 'datetime',
+            // 'sent_at' => 'datetime',
             'created_at' => 'datetime'
         ];
     }

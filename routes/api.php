@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
@@ -68,23 +69,23 @@ Route::prefix("project")->name("project.")->group(function () {
 Route::prefix("owner")->name("owner.")->group(function () {})->middleware("auth:sanctum");
 
 Route::prefix("room")->name("room.")->group(function () {
-    Route::get("/all", [EmailController::class, "all"])->name("all");
-    Route::get("/{id}", [EmailController::class, "one"])->name("one")->where("id", "[0-9}+");
-    Route::post("/", [EmailController::class, "create"])->name("create");
-    Route::put("/{id}", [EmailController::class, "update"])->name("update")->where("id", "[0-9}+");
-    Route::delete("/{id}", [EmailController::class, "delete"])->name("delete")->where("id", "[0-9}+");
+    Route::get("/all", [RoomController::class, "all"])->name("all");
+    Route::get("/{id}", [RoomController::class, "one"])->name("one")->where("id", "[0-9}+");
+    Route::post("/", [RoomController::class, "create"])->name("create");
+    Route::put("/{id}", [RoomController::class, "update"])->name("update")->where("id", "[0-9}+");
+    Route::delete("/{id}", [RoomController::class, "delete"])->name("delete")->where("id", "[0-9}+");
 })->middleware("auth:sanctum");
 
 Route::prefix("email")->name("email.")->group(function () {
-    Route::get("/all", [RoomController::class, "all"])->name("all");
-    Route::get("/{id}", [RoomController::class, "one"])->name("one")->where("id", "[0-9}+");
-    Route::post("/", [RoomController::class, "create"])->name("create")->where("id", "[0-9}+");
+    Route::get("/all", [EmailController::class, "all"])->name("all");
+    Route::get("/{id}", [EmailController::class, "one"])->name("one")->where("id", "[0-9}+");
+    Route::post("/send", [EmailController::class, "send"])->name("send");
     Route::prefix("template")->name("template.")->group(function () {
-        Route::get("/all", [RoomController::class, "all"])->name("all");
-        Route::get("/{id}", [RoomController::class, "one"])->name("one")->where("id", "[0-9}+");
-        Route::post("/", [RoomController::class, "create"])->name("create")->where("id", "[0-9}+");
-        Route::put("/{id}", [RoomController::class, "update"])->name("update")->where("id", "[0-9}+");
-        Route::delete("/{id}", [RoomController::class, "delete"])->name("delete")->where("id", "[0-9}+");
+        Route::get("/all", [EmailTemplateController::class, "all"])->name("all");
+        Route::get("/{id}", [EmailTemplateController::class, "one"])->name("one")->where("id", "[0-9}+");
+        Route::post("/", [EmailTemplateController::class, "create"])->name("create")->where("id", "[0-9}+");
+        Route::put("/{id}", [EmailTemplateController::class, "update"])->name("update")->where("id", "[0-9}+");
+        Route::delete("/{id}", [EmailTemplateController::class, "delete"])->name("delete")->where("id", "[0-9}+");
     });
 })->middleware("auth:sanctum");
 
