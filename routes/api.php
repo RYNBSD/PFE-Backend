@@ -70,7 +70,7 @@ Route::prefix("owner")->name("owner.")->group(function () {})->middleware("auth:
 Route::prefix("room")->name("room.")->group(function () {
     Route::get("/all", [EmailController::class, "all"])->name("all");
     Route::get("/{id}", [EmailController::class, "one"])->name("one")->where("id", "[0-9}+");
-    Route::post("/{id}", [EmailController::class, "create"])->name("create")->where("id", "[0-9}+");
+    Route::post("/", [EmailController::class, "create"])->name("create");
     Route::put("/{id}", [EmailController::class, "update"])->name("update")->where("id", "[0-9}+");
     Route::delete("/{id}", [EmailController::class, "delete"])->name("delete")->where("id", "[0-9}+");
 })->middleware("auth:sanctum");
