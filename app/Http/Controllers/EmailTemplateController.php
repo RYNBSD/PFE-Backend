@@ -36,7 +36,7 @@ class EmailTemplateController extends BaseController
             return $this->sendError("Invalid email id", Response::HTTP_FORBIDDEN);
         }
 
-        $emailTemplate = EmailTemplate::where("id", "=", $id)->fist();
+        $emailTemplate = EmailTemplate::where("id", "=", $id)->first();
         if ($emailTemplate === null) {
             return $this->sendError("Email template not found", Response::HTTP_NOT_FOUND);
         }
@@ -114,7 +114,7 @@ class EmailTemplateController extends BaseController
             return $this->sendError("Invalid email id", Response::HTTP_FORBIDDEN);
         }
 
-        $emailTemplate = EmailTemplate::where("id", "=", $id)->fist();
+        $emailTemplate = EmailTemplate::where("id", "=", $id)->first();
         if ($emailTemplate === null) {
             return $this->sendError("Email template not found", Response::HTTP_NOT_FOUND);
         }

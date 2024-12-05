@@ -46,7 +46,7 @@ Route::prefix("company")->name("company.*")->group(function () {
 Route::prefix("admin")->name("admin.*")->group(function () {
     Route::get("/all", [AdminController::class, "all"])->name("all");
     Route::post("/", [AdminController::class, "create"])->name("create");
-    Route::delete("/", [AdminController::class, "delete"])->name("delete");
+    Route::delete("/{id}", [AdminController::class, "delete"])->name("delete")->where("id", "[0-9]+");
 })->middleware("auth:sanctum");
 
 Route::prefix("project")->name("project.")->group(function () {
@@ -60,7 +60,7 @@ Route::prefix("project")->name("project.")->group(function () {
     Route::delete("/{id}", [ProjectController::class, "delete"])->name("delete")->where("id", "[0-9]+");
 
     // Proposition
-    Route::get("/validate", [ProjectController::class, "validate"])->name("validate")->where("id", "[0-9}+");
+    Route::get("/validate", [ProjectController::class, "validate"])->name("validate");
     Route::patch("/validate/{id}", [ProjectController::class, "validate"])->name("validate")->where("id", "[0-9}+");
     Route::patch("/reject", [ProjectController::class, "reject"])->name("validate")->where("id", "[0-9}+");
 })->middleware("auth:sanctum");

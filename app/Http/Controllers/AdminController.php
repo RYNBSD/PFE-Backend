@@ -54,15 +54,20 @@ class AdminController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $body = $request->all();
-        $validator = Validator::make($body, [
-            "user_id" =>  ["required", "numeric"]
-        ]);
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        $id = (int)$request->route("id", 0);
+        if ($id <= 0) {
+            return $this->sendError("Invalid id", Response::HTTP_FORBIDDEN);
         }
 
-        $admin = Admin::find($body["user_id"])->first();
+        // $body = $request->all();
+        // $validator = Validator::make($body, [
+        //     "user_id" =>  ["required", "numeric"]
+        // ]);
+        // if ($validator->fails()) {
+        //     return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        // }
+
+        $admin = Admin::find($id)->first();
         if ($admin === null) {
             return $this->sendError("Admin not found", Response::HTTP_NOT_FOUND);
         }

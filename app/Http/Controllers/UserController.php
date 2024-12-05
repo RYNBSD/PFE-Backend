@@ -52,7 +52,7 @@ class UserController extends BaseController
         $validator = Validator::make($body, [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'role' => ['required', Rule::enum(UserRole::class)],
+            'role' => ['required', "string", Rule::enum(UserRole::class)],
             'email' => 'required|email|max:255',
             'password' => ["nullable", "string", "max:255"],
             'password_confirmation' => 'same:password',
@@ -68,6 +68,10 @@ class UserController extends BaseController
         ]);
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        }
+
+        if ($body["role"] === UserRole::OWNER || $body["role"] === UserRole::ADMIN) {
+            return $this->sendError("Invalid role", Response::HTTP_FORBIDDEN);
         }
 
         $body["password"] ??= null;
