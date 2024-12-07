@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectJuriesRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,9 @@ class ProjectJuryFactory extends Factory
      */
     public function definition(): array
     {
+        $juryRolesList = ProjectJuriesRole::values();
         return [
-            //
+            'role' => $juryRolesList[array_rand($juryRolesList)],
         ];
     }
 }

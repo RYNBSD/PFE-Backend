@@ -17,7 +17,7 @@ class ProjectSubmitFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'validated' => [TRUE,FALSE][random_int(0,1)],
         ];
     }
 }

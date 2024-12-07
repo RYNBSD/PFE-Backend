@@ -17,7 +17,7 @@ class ProjectPresentationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'date' => fake()->dateTimeBetween('now','+4 months'),
         ];
     }
 }

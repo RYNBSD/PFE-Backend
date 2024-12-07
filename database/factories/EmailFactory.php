@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\EmailStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class EmailFactory extends Factory
      */
     public function definition(): array
     {
+        $statusList = EmailStatus::values();
         return [
-            //
+            'subject' => 'Lorem Ipsum.',
+            'content' => 'Consequatur omnis dolores temporibus dicta ex placeat nemo iste. Sapiente quos voluptas et asperiores aut occaecati sed necessitatibus. Aut vitae enim assumenda quis. Rem occaecati aliquam incidunt fugiat omnis esse nemo',
+            'status' => $statusList[array_rand($statusList)],
         ];
     }
 }

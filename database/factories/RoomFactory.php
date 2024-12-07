@@ -16,8 +16,12 @@ class RoomFactory extends Factory
      */
     public function definition(): array
     {
+        $directions = ['N', 'S'];
         return [
-            //
+            // random number like N001, S210 or N 104
+            'room' => $directions[array_rand($directions)].
+                      random_int(0,2).
+                      str_pad(rand(1, 10), 2, '0', STR_PAD_LEFT),
         ];
     }
 }

@@ -17,7 +17,7 @@ class ProjectNoteFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'note' => fake()->randomFloat(2,0,20),
         ];
     }
 }

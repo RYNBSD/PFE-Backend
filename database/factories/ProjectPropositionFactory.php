@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,9 @@ class ProjectPropositionFactory extends Factory
      */
     public function definition(): array
     {
+        $statusList = ProjectStatus::values();
         return [
-            //
+            'stauts' => $statusList[array_rand($statusList)],
         ];
     }
 }

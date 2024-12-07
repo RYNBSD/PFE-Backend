@@ -16,8 +16,10 @@ class ProjectRegistrationFactory extends Factory
      */
     public function definition(): array
     {
+        $startDate = fake()->dateTimeBetween('now','+2 months');
         return [
-            //
+            'start_date' => $startDate,
+            'end_date' => fake()->dateTimeInInterval($startDate,'+2 months')
         ];
     }
 }

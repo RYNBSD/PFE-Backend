@@ -17,7 +17,7 @@ class ProjectPropositionFeedbackFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'feedback' => 'Ratione possimus molestiae quis et. Error et accusantium aut eum.',
         ];
     }
 }
