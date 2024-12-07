@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProjectPropositionsStatus;
 use App\Enums\ProjectStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,9 +18,29 @@ class ProjectPropositionFactory extends Factory
      */
     public function definition(): array
     {
-        $statusList = ProjectStatus::values();
+        $statusList = ProjectPropositionsStatus::values();
         return [
-            'stauts' => $statusList[array_rand($statusList)],
+            'status' => $statusList[array_rand($statusList)],
         ];
+    }
+    
+    //states
+    public function pending(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => ProjectPropositionsStatus::PENDING,
+        ]);
+    }
+    public function validated(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => ProjectPropositionsStatus::VALIDATED,
+        ]);
+    }
+    public function rejected(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => ProjectPropositionsStatus::REJECTED,
+        ]);
     }
 }

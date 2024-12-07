@@ -17,7 +17,21 @@ class ProjectSubmitFactory extends Factory
     public function definition(): array
     {
         return [
-            'validated' => [TRUE,FALSE][random_int(0,1)],
+            'validated' => [true,false][random_int(0,1)],
         ];
+    }
+    
+    //states
+    public function valid(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'validated' => true,
+        ]);
+    }
+    public function invalid(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'validated' => false,
+        ]);
     }
 }

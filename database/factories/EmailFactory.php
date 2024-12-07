@@ -19,9 +19,29 @@ class EmailFactory extends Factory
     {
         $statusList = EmailStatus::values();
         return [
-            'subject' => 'Lorem Ipsum.',
-            'content' => 'Consequatur omnis dolores temporibus dicta ex placeat nemo iste. Sapiente quos voluptas et asperiores aut occaecati sed necessitatibus. Aut vitae enim assumenda quis. Rem occaecati aliquam incidunt fugiat omnis esse nemo',
+            'subject' => fake()->sentence,
+            'content' => fake()->paragraph(4),
             'status' => $statusList[array_rand($statusList)],
         ];
+    }
+    
+    //states
+    public function sent(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => EmailStatus::SENT,
+        ]);
+    }
+    public function pending(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => EmailStatus::PENDING,
+        ]);
+    }
+    public function failed(): static 
+    {
+        return $this->state( fn (array $attributes)=>[
+            'status' => EmailStatus::FAILED,
+        ]);
     }
 }
