@@ -9,8 +9,8 @@ class ProjectRegistration extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectRegistrationFactory> */
     use HasFactory;
-    protected $fillable = [ //belong to a project suggestion??
-
+    protected $fillable = [ 
+        'project_id',
     ];
     protected function cast()
     {
