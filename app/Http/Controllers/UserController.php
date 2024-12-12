@@ -21,12 +21,11 @@ class UserController extends BaseController
     function all(Request $request)
     {
         $user = $request->user("sanctum");
-        if ($user->role !== UserRole::ADMIN || $user->role !== UserRole::OWNER) {
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $users = User::all();
-        $users->load("student", "teacher", "company", "admin");
+        $users = User::with("student", "teacher", "company", "admin")->all();
         return $this->sendResponse([
             "users" => $users
         ], Response::HTTP_OK);
@@ -44,9 +43,9 @@ class UserController extends BaseController
     function create(Request $request)
     {
         $user = $request->user("sanctum");
-        // if ($user->role !== UserRole::ADMIN || $user->role !== UserRole::OWNER) {
-        //     return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
-        // }
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
+            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
 
         $body = $request->all();
         $validator = Validator::make($body, [
@@ -77,6 +76,11 @@ class UserController extends BaseController
         $body["password"] ??= null;
         if ($body["password"] !== null && strlen($body["password"]) > 0) {
             $body["password"] = Hash::make($body["password"]);
+        }
+
+        $checkEmail = User::where("email", "=", $body["email"])->first();
+        if ($checkEmail !== null) {
+            return $this->sendError("Email already exists", Response::HTTP_FORBIDDEN);
         }
 
         $createdUser = User::create([
@@ -127,22 +131,26 @@ class UserController extends BaseController
         }
 
         $user = $request->user("sanctum");
-        User::where("id", "=", $user->id)->update([
+        $userId = (int)$request->input("user_id", 0);
+
+        $updateUserId = $userId > 0 && ($user->role === UserRole::ADMIN || $user->role === UserRole::OWNER) ? $userId : $user->id;
+
+        User::where("id", "=", $updateUserId)->update([
             'first_name' => $body["first_name"],
             'last_name' => $body["last_name"],
         ]);
         if ($user->role === UserRole::STUDENT) {
-            Student::where("user_id", "=", $user->id)->update([
+            Student::where("user_id", "=", $updateUserId)->update([
                 "major" => $body["student_major"],
                 "average_score" => $body["student_average_score"],
             ]);
         } else if ($user->role === UserRole::TEACHER) {
-            Teacher::where("user_id", "=", $user->id)->update([
+            Teacher::where("user_id", "=", $updateUserId)->update([
                 "grade" => $body["teacher_grade"],
                 "recruitment_date" => $body["teacher_recruitment_date"],
             ]);
         } else if ($user->role === UserRole::COMPANY) {
-            Company::where("user_id", "=", $user->id)->update([
+            Company::where("user_id", "=", $updateUserId)->update([
                 "name" => $body["company_name"],
                 "number" => $body["company_number"],
             ]);
@@ -155,7 +163,24 @@ class UserController extends BaseController
     function delete(Request $request)
     {
         $user = $request->user("sanctum");
-        $user->delete();
+        $userId = (int)$request->input("user_id", 0);
+
+        if ($userId > 0 && $userId !== $user->id) {
+            $searchUser = User::where("id", "=", $userId)->first();
+            if ($searchUser === null) {
+                return $this->sendError("User not found", Response::HTTP_NOT_FOUND);
+            }
+
+            if ($user->role === UserRole::OWNER) {
+                $searchUser->delete();
+            } else if ($user->role === UserRole::ADMIN && $searchUser->role !== UserRole::ADMIN && $searchUser->role !== UserRole::OWNER) {
+                $searchUser->delete();
+            } else {
+                $searchUser->delete();
+            }
+        } else {
+            $user->delete();
+        }
         return $this->sendResponse(null, Response::HTTP_OK);
     }
 }
