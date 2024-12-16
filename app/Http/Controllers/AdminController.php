@@ -15,7 +15,7 @@ class AdminController extends BaseController
     function all(Request $request)
     {
         $user = $request->user("sanctum");
-        if ($user->role !== UserRole::ADMIN || $user->role !== UserRole::OWNER) {
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 

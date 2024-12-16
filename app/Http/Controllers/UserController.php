@@ -25,7 +25,7 @@ class UserController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $users = User::with("student", "teacher", "company", "admin")->all();
+        $users = User::with("student", "teacher", "company", "admin")->get();
         return $this->sendResponse([
             "users" => $users
         ], Response::HTTP_OK);

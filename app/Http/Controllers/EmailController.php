@@ -68,7 +68,7 @@ class EmailController extends BaseController
             return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
         }
 
-        $receiver = User::where("email", "=", $body["email"])->first();
+        $receiver = User::where("email", "=", $body["to"])->first();
         if ($receiver === null || $receiver === $user->email) {
             return $this->sendError("Invalid receiver", Response::HTTP_FORBIDDEN);
         }
@@ -87,7 +87,7 @@ class EmailController extends BaseController
         Email::create([
             "subject" => $body["subject"],
             "content" => $body["content"],
-            "status" => $isSent ? EmailStatus::SENT : EmailStatus::FAILED,
+            "status" => EmailStatus::SENT,
             "receiver_id" => $receiver->id,
             "admin_id" => $user->id,
         ]);
