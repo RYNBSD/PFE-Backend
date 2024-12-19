@@ -11,6 +11,7 @@ class ProjectPropositionFeedback extends Model
     /** @use HasFactory<\Database\Factories\ProjectPropositionFeedbackFactory> */
     use HasFactory;
     protected $fillable = [
+        "project_proposition_id",
         'feedback',
     ];
     protected function cast()

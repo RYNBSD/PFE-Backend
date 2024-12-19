@@ -9,6 +9,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Project;
 use App\Models\ProjectProposition;
+use App\Models\ProjectPropositionFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +32,7 @@ class ProjectController extends BaseController
             return $this->sendError("Invalid project id", Response::HTTP_FORBIDDEN);
         }
 
-        $project = Project::with([])->where("id", "=", $id)->first();
+        $project = Project::with(["project_proposition", "project_note", "project_jury"])->where("id", "=", $id)->first();
         if ($project === null) {
             return $this->sendError("Project not found", Response::HTTP_NOT_FOUND);
         }
@@ -141,8 +142,6 @@ class ProjectController extends BaseController
 
     // ProjectProposition
 
-    function getValidated(Request $request) {}
-
     function validate(Request $request)
     {
         $user = $request->user("sanctum");
@@ -161,10 +160,6 @@ class ProjectController extends BaseController
         }
 
         $projectProposition = ProjectProposition::where("project_id", "=", $project->id)->first();
-        if ($projectProposition->status !== ProjectPropositionsStatus::PENDING) {
-            return $this->sendError("Project can\'t be validated", Response::HTTP_FORBIDDEN);
-        }
-
 
         $project->update([
             "status" => ProjectStatus::APPROVED,
@@ -179,6 +174,11 @@ class ProjectController extends BaseController
 
     function reject(Request $request)
     {
+        $user = $request->user("sanctum");
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
+            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
+
         $id = (int)$request->route("id", 0);
         if ($id <= 0) {
             return $this->sendError("Invalid project id", Response::HTTP_FORBIDDEN);
@@ -196,15 +196,19 @@ class ProjectController extends BaseController
         if ($project === null) {
             return $this->sendError("Project not found", Response::HTTP_NOT_FOUND);
         }
-        if ($project->status !== ProjectStatus::PROPOSED) {
-            return $this->sendError("Project can\'t be rejected", Response::HTTP_FORBIDDEN);
+
+        $projectProposition = ProjectProposition::where("project_id", "=", $project->id)->first();
+        if ($projectProposition->status === ProjectPropositionsStatus::VALIDATED) {
+            return $this->sendError("Project already validated", Response::HTTP_FORBIDDEN);
         }
 
-        $project->update([
-            "status" => ProjectStatus::PROPOSED
-        ]);
-        ProjectProposition::where("project_id", "=", $project->id)->update([
+        $projectProposition->update([
             "status" => ProjectPropositionsStatus::REJECTED
         ]);
+        ProjectPropositionFeedback::create([
+            "project_proposition_id" => $projectProposition->id,
+            "feedback" => $body["feedback"]
+        ]);
+        return $this->sendResponse(null, Response::HTTP_OK);
     }
 }
