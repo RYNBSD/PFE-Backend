@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("project_id")->unique();
             $table->enum("status", ProjectPropositionsStatus::values());
-            $table->unsignedBigInteger("validated_by");
+            $table->unsignedBigInteger("validated_by")->nullable();
             $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("project_id")->references("id")->on("projects");
             $table->foreign("validated_by")->references("user_id")->on("admins");

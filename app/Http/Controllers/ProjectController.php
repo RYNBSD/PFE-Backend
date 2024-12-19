@@ -18,7 +18,7 @@ class ProjectController extends BaseController
 {
     function all()
     {
-        $projects = Project::with(["project_proposition", "project_note", "project_jury"])::all();
+        $projects = Project::with(["project_proposition", "project_note", "project_jury"])->get();
         return $this->sendResponse([
             "projects" => $projects
         ], Response::HTTP_OK);
@@ -52,7 +52,7 @@ class ProjectController extends BaseController
         $validator = Validator::make($body, [
             "title" => "required|string|max:255",
             "description" => "required|string",
-            "status" => ["required", "string", Rule::enum(ProjectStatus::class)]
+            "type" => ["required", "string", Rule::enum(ProjectType::class)],
         ]);
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
@@ -127,10 +127,10 @@ class ProjectController extends BaseController
         $user = $request->user("sanctum");
         $projectProposition = ProjectProposition::where("user_id", "=", $user->id)->where("project_id", "=", $id)->first();
         if ($projectProposition === null) {
-            return $this->sendError("Not found", Response::HTTP_NOT_FOUND);
+            return $this->sendError("Project Not found", Response::HTTP_NOT_FOUND);
         }
 
-        $project = Project::find($id);
+        $project = Project::find($id)->first();
         if (!isset($project)) {
             return $this->sendError("Project not found", Response::HTTP_NOT_FOUND);
         }
@@ -141,9 +141,7 @@ class ProjectController extends BaseController
 
     // ProjectProposition
 
-    function getValidated(Request $request) {
-
-    }
+    function getValidated(Request $request) {}
 
     function validate(Request $request)
     {

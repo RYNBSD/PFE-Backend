@@ -27,12 +27,13 @@ class Email extends Model
             'created_at' => 'datetime'
         ];
     }
-    protected function user(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "receiver_id");
     }
-    protected function admin(): BelongsTo
+
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(Admin::class, null, "user_id");
     }
 }

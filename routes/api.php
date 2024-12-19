@@ -55,7 +55,7 @@ Route::prefix("project")->name("project.")->group(function () {
 
     // CRUD
     Route::get("/{id}", [ProjectController::class, "one"])->name("preview")->where("id", "[0-9]+");
-    Route::post("/{id}", [ProjectController::class, "create"])->name("create")->where("id", "[0-9]+");
+    Route::post("/", [ProjectController::class, "create"])->name("create")->where("id", "[0-9]+");
     Route::put("/{id}", [ProjectController::class, "update"])->name("update")->where("id", "[0-9]+");
     Route::delete("/{id}", [ProjectController::class, "delete"])->name("delete")->where("id", "[0-9]+");
 

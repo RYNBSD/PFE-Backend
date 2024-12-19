@@ -32,15 +32,15 @@ class Project extends Model
             "deleted_at" => "datetime"
         ];
     }
-    protected function project_proposition(): HasOne
+    public function project_proposition(): HasOne
     {
         return $this->hasOne(ProjectProposition::class);
     }
-    protected function project_note(): HasOne
+    public function project_note(): HasOne
     {
         return $this->hasOne(ProjectNote::class);
     }
-    protected function project_jury(): HasMany
+    public function project_jury(): HasMany
     {
         return $this->hasMany(ProjectJury::class);
     }

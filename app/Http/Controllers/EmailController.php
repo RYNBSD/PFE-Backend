@@ -23,7 +23,7 @@ class EmailController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $emails = Email::with(["user", "admin"])->all();
+        $emails = Email::with(["user", "admin"])->get();
         return $this->sendResponse([
             "emails" => $emails
         ], Response::HTTP_OK);
@@ -76,14 +76,8 @@ class EmailController extends BaseController
         $mailable = new Mailable();
         $mailable->to($body["to"])->subject($body["subject"])->html($body["content"]);
 
-        $isSent = false;
-        try {
-            Mail::send($mailable);
-            $isSent = true;
-        } catch (Exception $e) {
-            $isSent = false;
-        }
 
+        Mail::send($mailable);
         Email::create([
             "subject" => $body["subject"],
             "content" => $body["content"],

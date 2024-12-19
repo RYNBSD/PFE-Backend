@@ -12,7 +12,12 @@ class ProjectProposition extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectPropositionFactory> */
     use HasFactory;
+
+    public $timestamps = false;
+
     protected $fillable = [
+        "user_id",
+        "project_id",
         'status',
     ];
     protected function cast()
