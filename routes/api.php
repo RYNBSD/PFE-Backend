@@ -25,6 +25,7 @@ Route::prefix("auth")->name("auth.")->group(function () {
 
 Route::prefix("user")->name("user.")->group(function () {
     Route::get("/all", [UserController::class, "all"])->name("all");
+    Route::get("/archive", [UserController::class, "archive"])->name("archive");
     Route::get("/", [UserController::class, "profile"])->name("profile");
     Route::post("/", [UserController::class, "create"])->name("create");
     Route::put("/", [UserController::class, "update"])->name("update");
@@ -51,7 +52,8 @@ Route::prefix("admin")->name("admin.*")->group(function () {
 
 Route::prefix("project")->name("project.")->group(function () {
     Route::get("/all", [ProjectController::class, "all"])->name("all");
-    Route::get("/proposal", [ProjectController::class, "proposal"])->name("proposal");
+    Route::get("/archive", [ProjectController::class, "archive"])->name("archive");
+    // Route::get("/proposal", [ProjectController::class, "proposal"])->name("proposal");
 
     // CRUD
     Route::get("/{id}", [ProjectController::class, "one"])->name("preview")->where("id", "[0-9]+");
@@ -69,6 +71,7 @@ Route::prefix("owner")->name("owner.")->group(function () {})->middleware("auth:
 
 Route::prefix("room")->name("room.")->group(function () {
     Route::get("/all", [RoomController::class, "all"])->name("all");
+    Route::get("/archive", [RoomController::class, "archive"])->name("archive");
     Route::get("/{id}", [RoomController::class, "one"])->name("one")->where("id", "[0-9]+");
     Route::post("/", [RoomController::class, "create"])->name("create");
     Route::put("/{id}", [RoomController::class, "update"])->name("update")->where("id", "[0-9]+");
@@ -81,6 +84,7 @@ Route::prefix("email")->name("email.")->group(function () {
     Route::post("/send", [EmailController::class, "send"])->name("send");
     Route::prefix("template")->name("template.")->group(function () {
         Route::get("/all", [EmailTemplateController::class, "all"])->name("all");
+        Route::get("/archive", [EmailTemplateController::class, "archive"])->name("archive");
         Route::get("/{id}", [EmailTemplateController::class, "one"])->name("one")->where("id", "[0-9]+");
         Route::post("/", [EmailTemplateController::class, "create"])->name("create")->where("id", "[0-9]+");
         Route::put("/{id}", [EmailTemplateController::class, "update"])->name("update")->where("id", "[0-9]+");

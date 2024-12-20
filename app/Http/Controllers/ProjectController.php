@@ -25,6 +25,14 @@ class ProjectController extends BaseController
         ], Response::HTTP_OK);
     }
 
+    function archive()
+    {
+        $projects = Project::onlyTrashed()->with(["project_proposition", "project_note", "project_jury"])->get();
+        return $this->sendResponse([
+            "projects" => $projects
+        ], Response::HTTP_OK);
+    }
+
     function one(Request $request)
     {
         $id = (int)$request->route("id", 0);

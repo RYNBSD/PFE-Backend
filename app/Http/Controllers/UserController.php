@@ -31,6 +31,19 @@ class UserController extends BaseController
         ], Response::HTTP_OK);
     }
 
+    function archive(Request $request)
+    {
+        $user = $request->user("sanctum");
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
+            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
+
+        $users = User::onlyTrashed()->with("student", "teacher", "company", "admin")->get();
+        return $this->sendResponse([
+            "users" => $users
+        ], Response::HTTP_OK);
+    }
+
     function profile(Request $request)
     {
         $user = $request->user("sanctum");

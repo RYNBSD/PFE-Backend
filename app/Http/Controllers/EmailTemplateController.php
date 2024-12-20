@@ -18,7 +18,20 @@ class EmailTemplateController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $emailTemplates = EmailTemplate::all();
+        $emailTemplates = EmailTemplate::get();
+        return $this->sendResponse([
+            "email_templates" => $emailTemplates,
+        ], Response::HTTP_OK);
+    }
+
+    function archive(Request $request)
+    {
+        $user = $request->user("sanctum");
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
+            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
+
+        $emailTemplates = EmailTemplate::onlyTrashed()->get();
         return $this->sendResponse([
             "email_templates" => $emailTemplates,
         ], Response::HTTP_OK);

@@ -18,7 +18,20 @@ class RoomController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
-        $rooms = Room::all();
+        $rooms = Room::get();
+        return $this->sendResponse([
+            "rooms" => $rooms
+        ], Response::HTTP_OK);
+    }
+
+    function archive(Request $request)
+    {
+        $user = $request->user("sanctum");
+        if ($user->role !== UserRole::ADMIN && $user->role !== UserRole::OWNER) {
+            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        }
+
+        $rooms = Room::onlyTrashed()->get();
         return $this->sendResponse([
             "rooms" => $rooms
         ], Response::HTTP_OK);
