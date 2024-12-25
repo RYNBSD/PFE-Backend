@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmailTemplateController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
@@ -31,6 +32,15 @@ Route::prefix("user")->name("user.")->group(function () {
     Route::put("/", [UserController::class, "update"])->name("update");
     Route::delete("/", [UserController::class, "delete"])->name("delete");
 })->middleware('auth:sanctum');
+
+Route::prefix("group")->name("group.")->group(function () {
+    Route::get("/all", [GroupController::class, "all"])->name("all");
+    Route::get("/archive", [GroupController::class, "archive"])->name("archive");
+    Route::get("/{id}", [GroupController::class, "one"])->name("one")->where("id", "[0-9]+");
+    Route::post("/", [GroupController::class, "create"])->name("create");
+    Route::put("/{id}", [GroupController::class, "update"])->name("update")->where("id", "[0-9]+");
+    Route::delete("/{id}", [GroupController::class, "delete"])->name("delete")->where("id", "[0-9]+");
+})->middleware("auth:sanctum");
 
 Route::prefix("student")->name("student.*")->group(function () {
     Route::get("/all", [StudentController::class, "all"])->name("all");

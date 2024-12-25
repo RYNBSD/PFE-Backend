@@ -14,17 +14,22 @@ class Group extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [];
-    protected function groupMember():HasMany{
+
+    protected function group_member(): HasMany
+    {
         return $this->hasMany(GroupMember::class);
     }
-    protected function projectSubmit():HasOne{
+    protected function project_submit(): HasOne
+    {
         return $this->hasOne(ProjectSubmit::class);
     }
-    protected function cast(){
+
+    protected function cast()
+    {
         return [
-            "created_at"=>"datetime",
-            "updated_at"=>"datetime",
-            "deleted_at"=>"datetime"
+            "created_at" => "datetime",
+            "updated_at" => "datetime",
+            "deleted_at" => "datetime"
         ];
     }
 }

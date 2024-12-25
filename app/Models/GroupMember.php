@@ -10,6 +10,9 @@ class GroupMember extends Model
 {
     /** @use HasFactory<\Database\Factories\GroupMemberFactory> */
     use HasFactory;
+
+    protected $fillable = ["student_id", "group_id"];
+
     protected function group() : BelongsTo
     {
         return $this->belongsTo(Group::class);
