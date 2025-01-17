@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Project;
 use App\Models\ProjectProposition;
 use App\Models\ProjectPropositionFeedback;
+use App\Models\ProjectRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,9 +54,9 @@ class ProjectController extends BaseController
     function create(Request $request)
     {
         $user = $request->user("sanctum");
-        if ($user->role === UserRole::STUDENT) {
-            return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
-        }
+        // if ($user->role === UserRole::STUDENT) {
+        //     return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
+        // }
 
         $body = $request->all();
         $validator = Validator::make($body, [
@@ -157,6 +158,17 @@ class ProjectController extends BaseController
             return $this->sendError("Unauthorized", Response::HTTP_UNAUTHORIZED);
         }
 
+        $body = $request->all();
+        $validator = Validator::make($body, [
+            "registration_start" => "required|string|date",
+            "registration_end" => "required|string|date",
+            "presentation_start" => "required|string|date",
+            "presentation_end" => "required|string|date",
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', Response::HTTP_BAD_REQUEST, $validator->errors());
+        }
+
         $id = (int)$request->route("id", 0);
         if ($id <= 0) {
             return $this->sendError("Invalid project id", Response::HTTP_FORBIDDEN);
@@ -175,6 +187,11 @@ class ProjectController extends BaseController
         $projectProposition->update([
             "status" => ProjectPropositionsStatus::VALIDATED,
             "validated_by" => $user->id
+        ]);
+        ProjectRegistration::create([
+            "project_id" => $project->id,
+            "start_date" => $body["registration_start"],
+            "end_date" => $body["registration_end"]
         ]);
 
         return $this->sendResponse(null, Response::HTTP_OK);

@@ -9,8 +9,10 @@ class ProjectRegistration extends Model
 {
     /** @use HasFactory<\Database\Factories\ProjectRegistrationFactory> */
     use HasFactory;
-    protected $fillable = [ 
+    protected $fillable = [
         'project_id',
+        "start_date",
+        "end_date"
     ];
     protected function cast()
     {
