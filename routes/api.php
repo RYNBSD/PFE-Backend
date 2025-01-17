@@ -56,9 +56,6 @@ Route::prefix("teacher")->name("teacher.*")->group(function () {
 Route::prefix("company")->name("company.*")->group(function () {
     Route::get("/all",  [CompanyController::class, "all"])->name("all");
     Route::get("/{id}", [CompanyController::class, "one"])->name("one")->where("id", "[0-9]+");
-    Route::post("/",    [CompanyController::class, "create"])->name("create");
-    Route::put("/{id}", [CompanyController::class, "update"])->name("update")->where("id", "[0-9]+");
-    Route::delete("/{id}",[CompanyController::class, "delete"])->name("delete")->where("id", "[0-9]+");
 })->middleware('auth:sanctum');
 
 Route::prefix("admin")->name("admin.*")->group(function () {
