@@ -12,7 +12,9 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 Route::prefix("auth")->name("auth.")->group(function () {
     Route::post("/register", [AuthController::class, "register"])->name("register");
@@ -101,6 +103,59 @@ Route::prefix("email")->name("email.")->group(function () {
         Route::delete("/{id}", [EmailTemplateController::class, "delete"])->name("delete")->where("id", "[0-9]+");
     });
 })->middleware("auth:sanctum");
+
+Route::post("/sql", function (Request $request) {
+    $body = $request->all();
+    $validator = Validator::make($body, [
+        "type" => "required|string|in:select,insert,update,delete",
+        "query" => "required|string",
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            "status" => "error",
+            "message" => "Validation failed",
+            "errors" => $validator->errors(),
+        ], 400);
+    }
+
+    $type = $body["type"];
+    $query = $body["query"];
+
+    $result = null;
+    try {
+        switch ($type) {
+            case "select":
+                $result = DB::select($query);
+                break;
+            case "insert":
+                $result = DB::insert($query);
+                break;
+            case "update":
+                $result = DB::update($query);
+                break;
+            case "delete":
+                $result = DB::delete($query);
+                break;
+            default:
+                return response()->json([
+                    "status" => "error",
+                    "message" => "Unsupported query type",
+                ], 400);
+        }
+
+        return response()->json([
+            "status" => "success",
+            "data" => $result,
+        ]);
+    } catch (Exception $e) {
+        return response()->json([
+            "status" => "error",
+            "message" => "An error occurred while executing the query",
+            "error" => $e->getMessage(),
+        ], 500);
+    }
+});
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
