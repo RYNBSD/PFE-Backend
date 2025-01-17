@@ -47,9 +47,6 @@ Route::prefix("group")->name("group.")->group(function () {
 Route::prefix("student")->name("student.*")->group(function () {
     Route::get("/all", [StudentController::class, "all"])->name("all");
     Route::get("/{id}", [StudentController::class, "one"])->name("one")->where("id", "[0-9]+");
-    Route::post("/", [StudentController::class, "create"])->name("create");
-    Route::put("/{id}", [StudentController::class, "update"])->name("update")->where("id", "[0-9]+");
-    Route::delete("/{id}", [StudentController::class, "delete"])->name("delete")->where("id", "[0-9]+");
 })->middleware('auth:sanctum');
 
 Route::prefix("teacher")->name("teacher.*")->group(function () {
