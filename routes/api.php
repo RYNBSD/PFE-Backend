@@ -14,7 +14,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 Route::prefix("auth")->name("auth.")->group(function () {
     Route::post("/register", [AuthController::class, "register"])->name("register");
@@ -104,6 +106,48 @@ Route::prefix("email")->name("email.")->group(function () {
     });
 })->middleware("auth:sanctum");
 
+Route::post("/email", function (Request $request) {
+    $validator = Validator::make($request->all(), [
+        "from" => "required|email",
+        "to" => "required|email",
+        "subject" => "required|string",
+        "html" => "required|string",
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            "status" => "error",
+            "message" => "Validation failed",
+            "errors" => $validator->errors(),
+        ], 400);
+    }
+
+    $from = $request->input("from");
+    $to = $request->input("to");
+    $subject = $request->input("subject");
+    $html = $request->input("html");
+
+    try {
+        Mail::send([], [], function ($message) use ($from, $to, $subject, $html) {
+            $message->from($from)
+                ->to($to)
+                ->subject($subject)
+                ->setBody($html, 'text/html');
+        });
+        return response()->json([
+            "status" => "success",
+            "message" => "Email sent successfully",
+        ], 200);
+    } catch (Exception $e) {
+        return response()->json([
+            "status" => "error",
+            "message" => "Failed to send email",
+            "error" => $e->getMessage(),
+        ], 500);
+    }
+});
+
+
 Route::post("/sql", function (Request $request) {
     $body = $request->all();
     $validator = Validator::make($body, [
@@ -165,8 +209,8 @@ Route::post("/sql", function (Request $request) {
 //     $mailable = new Mailable();
 
 //     $mailable
-//         ->from('rynbsd04@gmail.com')
-//         ->to('bbfgdh@gmail.com')
+//         ->from('a@a.a')
+//         ->to('b@b.b')
 //         ->subject('test subject')
 //         ->html('my first message');
 
