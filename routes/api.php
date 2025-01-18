@@ -48,6 +48,7 @@ Route::prefix("group")->name("group.")->group(function () {
 
 Route::prefix("student")->name("student.*")->group(function () {
     Route::get("/all", [StudentController::class, "all"])->name("all");
+    Route::get("/{id}", [StudentController::class, "one"])->name("one")->where("id", "[0-9]+");
 })->middleware('auth:sanctum');
 
 Route::prefix("teacher")->name("teacher.*")->group(function () {
@@ -55,7 +56,8 @@ Route::prefix("teacher")->name("teacher.*")->group(function () {
 })->middleware('auth:sanctum');
 
 Route::prefix("company")->name("company.*")->group(function () {
-    Route::get("/all", [CompanyController::class, "all"])->name("all");
+    Route::get("/all",  [CompanyController::class, "all"])->name("all");
+    Route::get("/{id}", [CompanyController::class, "one"])->name("one")->where("id", "[0-9]+");
 })->middleware('auth:sanctum');
 
 Route::prefix("admin")->name("admin.*")->group(function () {
